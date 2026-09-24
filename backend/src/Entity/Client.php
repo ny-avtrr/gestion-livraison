@@ -31,11 +31,11 @@ class Client
     #[Groups(['client:read'])]
     private ?string $email = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20, nullable: true)]
     #[Groups(['client:read'])]
     private ?string $telephone = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['client:read'])]
     private ?string $adresse = null;
 

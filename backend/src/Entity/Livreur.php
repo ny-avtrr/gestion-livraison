@@ -6,6 +6,8 @@ use App\Repository\LivreurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use symfony\Component\Serializer\Annotation\Groups;
+use symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LivreurRepository::class)]
 class Livreur
@@ -15,13 +17,21 @@ class Livreur
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255)]   
+    #[Groups(['livreur:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['livreur:read'])]
     private ?string $prenom = null;
 
+    
+    #[ORM\Column(length: 20)]
+    #[Groups(['livreur:read'])]
+    private ?string $telephone = null;
+
     #[ORM\Column]
+    #[Groups(['livreur:read'])]
     private ?bool $disponible = null;
 
     /**
@@ -60,6 +70,18 @@ class Livreur
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+        public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): static
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }
@@ -105,4 +127,5 @@ class Livreur
 
         return $this;
     }
+
 }

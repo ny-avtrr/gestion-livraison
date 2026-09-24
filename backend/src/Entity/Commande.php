@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert; 
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
@@ -17,27 +19,36 @@ class Commande
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['commande:read'])]
     private ?string $reference = null;
 
     #[ORM\Column]
+    #[Groups(['commande:read'])]
     private ?\DateTimeImmutable $dateCreation = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['commande:read'])]
     private ?string $adresseLivraison = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
+    #[Groups(['commande:read'])]
     private ?float $montant = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?client $client = null;
+    #[Groups(['commande:read'])]
+    private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?livreur $livreur = null;
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['commande:read'])]
+    private ?Livreur $livreur = null;
 
     #[ORM\ManyToOne]
-    private ?statut $statutActuel = null;
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull]
+    #[Groups(['commande:read'])]
+    private ?Statut $statutActuel = null;
 
     /**
      * @var Collection<int, SuiviLivraison>
@@ -103,12 +114,12 @@ class Commande
         return $this;
     }
 
-    public function getClient(): ?client
+    public function getClient(): ?Client
     {
         return $this->client;
     }
 
-    public function setClient(?client $client): static
+    public function setClient(?Client $client): static
     {
         $this->client = $client;
 

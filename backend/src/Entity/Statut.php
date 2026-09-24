@@ -6,6 +6,7 @@ use App\Repository\StatutRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: StatutRepository::class)]
 class Statut
@@ -13,15 +14,19 @@ class Statut
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['statut:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['statut:read'])]
     private ?string $libelle = null;
 
     #[ORM\Column]
+    #[Groups(['statut:read'])]
     private ?int $ordre = null;
 
-    #[ORM\Column(length: 7)]
+    #[ORM\Column(length: 7, nullable: true)]
+    #[Groups(['statut:read'])]
     private ?string $couleur = null;
 
     /**

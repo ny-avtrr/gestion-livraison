@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\SuiviLivraisonRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SuiviLivraisonRepository::class)]
 class SuiviLivraison
@@ -18,14 +20,17 @@ class SuiviLivraison
     private ?\DateTimeImmutable $dateChangement = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['suivi:read'])]
     private ?string $commentaire = null;
 
     #[ORM\ManyToOne(inversedBy: 'suiviLivraisons')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['suivi:read', 'commande:read'])]
     private ?commande $commande = null;
 
     #[ORM\ManyToOne(inversedBy: 'suiviLivraisons')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['suivi:read', 'statut:read'])]
     private ?statut $statut = null;
 
     public function getId(): ?int
